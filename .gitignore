@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+venv/
+.venv/
+instance/*.db
+screenshots/
+reports/*.pdf
+datasets/*.csv
+app/ml/saved_models/*.joblib
+.env

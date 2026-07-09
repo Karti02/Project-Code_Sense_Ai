@@ -1,0 +1,22 @@
+"""
+Models package. Import everything here so `db.create_all()` in the
+app factory sees every table, and so other modules can simply do
+`from app.models import User, CodingSession, ...`.
+"""
+
+from app.models.user import User
+from app.models.session import CodingSession, ActivityLog
+from app.models.language import LanguageUsage
+from app.models.screenshot import Screenshot
+from app.models.stats import DailyStat
+from app.models.prediction import MLPrediction
+
+__all__ = [
+    "User",
+    "CodingSession",
+    "ActivityLog",
+    "LanguageUsage",
+    "Screenshot",
+    "DailyStat",
+    "MLPrediction",
+]

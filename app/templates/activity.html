@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Activity - CodeSense AI{% endblock %}
+{% block page_title %}Activity Monitor{% endblock %}
+
+{% block content %}
+
+<form method="GET" class="filter-bar">
+  <input type="text" name="q" value="{{ search }}" class="form-control" style="max-width:260px;"
+         placeholder="Search app, project, file, language...">
+  <input type="date" name="date" value="{{ date_filter }}" class="form-control" style="max-width:200px;">
+  <button class="btn btn-brand" type="submit"><i class="fa-solid fa-filter"></i> Filter</button>
+  <a href="{{ url_for('activity.history') }}" class="btn btn-outline-brand">Clear</a>
+</form>
+
+<div class="panel">
+  <div class="panel-title">Coding Sessions</div>
+  {% if sessions %}
+  <table class="table-modern">
+    <thead>
+      <tr><th>App</th><th>Project</th><th>File</th><th>Language</th><th>Duration</th><th>Idle</th>
+          <th>Keys</th><th>Clicks</th><th>Compiles</th><th>Started</th></tr>
+    </thead>
+    <tbody>
+    {% for s in sessions %}
+      <tr>
+        <td>{{ s.app_name }}</td>
+        <td>{{ s.project_name }}</td>
+        <td class="mono">{{ s.file_name or '-' }}</td>
+        <td>{{ s.language }}</td>
+        <td class="mono">{{ s.duration_seconds | hms }}</td>
+        <td class="mono">{{ s.idle_seconds | hms }}</td>
+        <td>{{ s.keyboard_count }}</td>
+        <td>{{ s.mouse_clicks }}</td>
+        <td>{{ s.compile_count }}</td>
+        <td>{{ s.start_time.strftime('%b %d, %Y %H:%M') }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <div>No sessions match your filters.</div>
+  </div>
+  {% endif %}
+</div>
+
+<div class="panel">
+  <div class="panel-title">Event Log</div>
+  {% if logs %}
+  <table class="table-modern">
+    <thead><tr><th>Event</th><th>App</th><th>Detail</th><th>Time</th></tr></thead>
+    <tbody>
+    {% for l in logs %}
+      <tr>
+        <td><span class="badge-chip">{{ l.event_type }}</span></td>
+        <td>{{ l.app_name }}</td>
+        <td>{{ l.detail }}</td>
+        <td>{{ l.timestamp.strftime('%b %d, %H:%M:%S') }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state"><i class="fa-solid fa-list"></i><div>No events logged yet.</div></div>
+  {% endif %}
+</div>
+
+{% endblock %}

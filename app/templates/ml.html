@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}ML Insights - CodeSense AI{% endblock %}
+{% block page_title %}Machine Learning Insights{% endblock %}
+
+{% block content %}
+
+<div class="row g-4 mb-2">
+  <div class="col-md-4">
+    <div class="tab-card" style="--accent-color:#7c5cff;">
+      <div class="stat-label"><i class="fa-solid fa-calendar-day"></i> Today's Predicted Score</div>
+      <div class="stat-value">{{ today_score }}/100</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="tab-card" style="--accent-color:#00e5a0;">
+      <div class="stat-label"><i class="fa-solid fa-calendar-plus"></i> Tomorrow's Predicted Score</div>
+      <div class="stat-value">{{ tomorrow_score }}/100</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="tab-card" style="--accent-color:#ffb84d;">
+      <div class="stat-label"><i class="fa-solid fa-robot"></i> Model in Use</div>
+      <div class="stat-value" style="font-size:1.2rem;">{{ model_name or "Not trained yet" }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="panel">
+      <div class="panel-title">7-Day Productivity Trend (model prediction)</div>
+      <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="panel">
+      <div class="panel-title">Feature Importance</div>
+      {% if metrics %}
+        {% for feature, importance in metrics.feature_importance.items() %}
+          <div class="mb-2">
+            <div class="d-flex justify-content-between small mb-1">
+              <span>{{ feature.replace('_',' ')|title }}</span>
+              <span class="mono">{{ (importance*100)|round(1) }}%</span>
+            </div>
+            <div style="height:6px;background:var(--border);border-radius:4px;overflow:hidden;">
+              <div style="height:100%;width:{{ (importance*100)|round(1) }}%;background:var(--accent);"></div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty-state"><i class="fa-solid fa-chart-simple"></i><div>Train the model to see feature importance.</div></div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-title">
+    Model Comparison
+    <button id="retrainBtn" class="btn btn-sm btn-outline-brand"><i class="fa-solid fa-rotate"></i> Retrain models</button>
+  </div>
+  {% if metrics %}
+  <table class="table-modern">
+    <thead><tr><th>Model</th><th>R² Score (accuracy)</th><th>Mean Absolute Error</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Random Forest Regressor {% if metrics.chosen_model == 'RandomForest' %}<span class="badge-chip">chosen ✓</span>{% endif %}</td>
+        <td class="mono">{{ metrics.random_forest.r2 }}</td>
+        <td class="mono">{{ metrics.random_forest.mae }}</td>
+      </tr>
+      <tr>
+        <td>Linear Regression {% if metrics.chosen_model == 'LinearRegression' %}<span class="badge-chip">chosen ✓</span>{% endif %}</td>
+        <td class="mono">{{ metrics.linear_regression.r2 }}</td>
+        <td class="mono">{{ metrics.linear_regression.mae }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="stat-sub mt-2">Trained on {{ metrics.training_rows }} rows (real + synthetic bootstrap data).</div>
+  {% else %}
+  <div class="empty-state"><i class="fa-solid fa-database"></i><div>Click "Retrain models" to train on your latest activity.</div></div>
+  {% endif %}
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+const trendData = {{ trend | tojson }};
+new Chart(document.getElementById("trendChart"), {
+  type: "line",
+  data: {
+    labels: trendData.map(d => d.date.slice(5)),
+    datasets: [{
+      label: "Predicted productivity",
+      data: trendData.map(d => d.predicted_score),
+      borderColor: "#7c5cff",
+      backgroundColor: "rgba(124,92,255,0.15)",
+      fill: true,
+      tension: 0.35,
+      pointRadius: 3,
+    }],
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    scales: { y: { min: 0, max: 100 } },
+  },
+});
+
+document.getElementById("retrainBtn").addEventListener("click", async () => {
+  const btn = document.getElementById("retrainBtn");
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Training...';
+  await fetch("/ml/retrain", { method: "POST" });
+  location.reload();
+});
+</script>
+{% endblock %}

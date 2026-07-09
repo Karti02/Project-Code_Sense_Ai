@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - CodeSense AI{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div id="goalBanner" class="alert alert-success d-none">
+  <i class="fa-solid fa-trophy"></i> Nice! You've hit today's coding goal.
+</div>
+
+<!-- Live activity strip -->
+<div class="tab-card mb-4" style="--accent-color: var(--mint);">
+  <div class="d-flex flex-wrap align-items-center gap-4">
+    <div><span class="live-dot"></span> <b class="mono" id="liveStatus" style="color: var(--mint);">Coding</b></div>
+    <div class="text-dim">Active app: <b class="mono" id="liveApp">Detecting…</b></div>
+    <div class="text-dim">Language: <b class="mono" id="liveLang">Detecting…</b></div>
+    <button id="logCompileBtn" class="btn btn-sm btn-outline-brand ms-auto">Log a compile/run</button>
+  </div>
+</div>
+
+<!-- Stat cards -->
+<div class="stat-grid">
+  <div class="tab-card" style="--accent-color:#7c5cff;">
+    <div class="stat-label"><i class="fa-solid fa-clock"></i> Today's Coding Time</div>
+    <div class="stat-value" id="statCodingTime">{{ daily.coding_time_seconds // 3600 }}h {{ (daily.coding_time_seconds % 3600)//60 }}m</div>
+    <div class="stat-sub">Goal: {{ daily_goal_minutes }} min/day</div>
+  </div>
+  <div class="tab-card" style="--accent-color:#00e5a0;">
+    <div class="stat-label"><i class="fa-solid fa-gauge-high"></i> Productivity Score</div>
+    <div class="stat-value" id="statScore">{{ daily.productivity_score }}/100</div>
+    <div class="stat-sub">Based on today's activity</div>
+  </div>
+  <div class="tab-card" style="--accent-color:#ffb84d;">
+    <div class="stat-label"><i class="fa-solid fa-calendar-week"></i> Weekly Hours</div>
+    <div class="stat-value">{{ weekly.total_hours }}h</div>
+    <div class="stat-sub">Avg score: {{ weekly.avg_score }}/100</div>
+  </div>
+  <div class="tab-card" style="--accent-color:#4dabf7;">
+    <div class="stat-label"><i class="fa-solid fa-keyboard"></i> Keyboard Activity</div>
+    <div class="stat-value" id="statKeyboard">{{ daily.keyboard_count }}</div>
+    <div class="stat-sub">keystrokes today</div>
+  </div>
+  <div class="tab-card" style="--accent-color:#f472b6;">
+    <div class="stat-label"><i class="fa-solid fa-computer-mouse"></i> Mouse Activity</div>
+    <div class="stat-value" id="statMouse">{{ daily.mouse_clicks }}</div>
+    <div class="stat-sub">clicks today</div>
+  </div>
+  <div class="tab-card" style="--accent-color:#c084fc;">
+    <div class="stat-label"><i class="fa-solid fa-layer-group"></i> Coding Sessions</div>
+    <div class="stat-value" id="statSessions">{{ daily.sessions_count }}</div>
+    <div class="stat-sub">today</div>
+  </div>
+  <div class="tab-card" style="--accent-color:#00e5a0;">
+    <div class="stat-label"><i class="fa-solid fa-terminal"></i> Compile Count</div>
+    <div class="stat-value" id="statCompile">{{ daily.compile_count }}</div>
+    <div class="stat-sub">today</div>
+  </div>
+  <div class="tab-card" style="--accent-color:#ff5c7a;">
+    <div class="stat-label"><i class="fa-solid fa-fire"></i> Coding Streak</div>
+    <div class="stat-value" id="statStreak">{{ streak }} days</div>
+    <div class="stat-sub">longest: {{ longest_streak }} days</div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="panel">
+      <div class="panel-title">Weekly Coding Hours <i class="fa-solid fa-chart-column" style="color:var(--text-faint);"></i></div>
+      <div class="chart-wrap"><canvas id="weeklyChart"></canvas></div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="panel">
+      <div class="panel-title">Language Distribution (30d) <i class="fa-solid fa-chart-pie" style="color:var(--text-faint);"></i></div>
+      <div class="chart-wrap"><canvas id="langChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="panel">
+      <div class="panel-title">Recent Activity</div>
+      {% if recent_sessions %}
+      <table class="table-modern">
+        <thead><tr><th>App</th><th>Project</th><th>Language</th><th>Duration</th><th>Started</th></tr></thead>
+        <tbody>
+        {% for s in recent_sessions %}
+          <tr>
+            <td>{{ s.app_name }}</td>
+            <td>{{ s.project_name }}</td>
+            <td>{{ s.language }}</td>
+            <td class="mono">{{ s.duration_seconds | hms }}</td>
+            <td>{{ s.start_time.strftime('%b %d, %H:%M') }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="empty-state">
+        <i class="fa-solid fa-inbox"></i>
+        <div>No coding sessions yet — open your editor and start typing!</div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="panel">
+      <div class="panel-title">Achievements</div>
+      {% if badges %}
+        <div>
+        {% for b in badges %}
+          <span class="badge-chip">{{ b.icon }} {{ b.name }}</span>
+        {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-state">
+          <i class="fa-solid fa-medal"></i>
+          <div>Keep coding daily to unlock badges.</div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Admin - CodeSense AI{% endblock %}
+{% block page_title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="row g-4 mb-4">
+  <div class="col-md-3">
+    <div class="panel text-center">
+      <i class="fa-solid fa-users fa-2x mb-2" style="color:var(--accent);"></i>
+      <h4 class="mb-0">{{ total_users }}</h4>
+      <p class="stat-sub mb-0">Total users</p>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="panel text-center">
+      <i class="fa-solid fa-user-shield fa-2x mb-2" style="color:var(--mint);"></i>
+      <h4 class="mb-0">{{ admin_count }}</h4>
+      <p class="stat-sub mb-0">Administrators</p>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="panel text-center">
+      <i class="fa-solid fa-laptop-code fa-2x mb-2" style="color:var(--warn);"></i>
+      <h4 class="mb-0">{{ total_sessions }}</h4>
+      <p class="stat-sub mb-0">Coding sessions</p>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="panel text-center">
+      <i class="fa-solid fa-image fa-2x mb-2"></i>
+      <h4 class="mb-0">{{ total_screenshots }}</h4>
+      <p class="stat-sub mb-0">Screenshots stored</p>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <h5 class="mb-3">User Management</h5>
+  <div class="table-responsive">
+    <table class="table table-sm align-middle">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Joined</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            {% if user.is_admin %}
+              <span class="badge bg-success">Admin</span>
+            {% else %}
+              <span class="badge bg-secondary">User</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if user.is_active_account %}
+              <span class="badge bg-info">Active</span>
+            {% else %}
+              <span class="badge bg-danger">Disabled</span>
+            {% endif %}
+          </td>
+          <td>{{ user.created_at.strftime('%Y-%m-%d') if user.created_at else '-' }}</td>
+          <td class="text-end">
+            {% if user.id != current_user.id %}
+            <form method="post" action="{{ url_for('admin.toggle_admin', user_id=user.id) }}" class="d-inline">
+              <button type="submit" class="btn btn-sm btn-outline-secondary">
+                {{ 'Revoke admin' if user.is_admin else 'Make admin' }}
+              </button>
+            </form>
+            <form method="post" action="{{ url_for('admin.toggle_active', user_id=user.id) }}" class="d-inline">
+              <button type="submit" class="btn btn-sm btn-outline-danger">
+                {{ 'Deactivate' if user.is_active_account else 'Activate' }}
+              </button>
+            </form>
+            {% else %}
+              <span class="stat-sub">(you)</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

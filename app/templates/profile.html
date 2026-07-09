@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Profile - CodeSense AI{% endblock %}
+{% block page_title %}Profile{% endblock %}
+
+{% block content %}
+
+<div class="row g-4">
+  <div class="col-lg-5">
+    <div class="panel text-center">
+      <i class="fa-solid fa-circle-user" style="font-size:4rem;color:var(--accent);"></i>
+      <h5 class="mt-3 mb-0">{{ user.username }}</h5>
+      <div class="stat-sub mb-3">{{ user.email }}</div>
+      <div>
+        <span class="badge-chip"><i class="fa-solid fa-fire"></i> {{ user.current_streak }}-day streak</span>
+        <span class="badge-chip"><i class="fa-solid fa-trophy"></i> Best: {{ user.longest_streak }} days</span>
+      </div>
+      <div class="stat-sub mt-3">Member since {{ user.created_at.strftime('%b %Y') }}</div>
+    </div>
+  </div>
+
+  <div class="col-lg-7">
+    <div class="panel">
+      <div class="panel-title">Edit Profile</div>
+      <form method="POST">
+        <div class="mb-3">
+          <label class="form-label">Full name</label>
+          <input type="text" name="full_name" class="form-control" value="{{ user.full_name or '' }}">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" name="email" class="form-control" value="{{ user.email }}">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input type="text" class="form-control" value="{{ user.username }}" disabled>
+          <div class="form-text">Username cannot be changed.</div>
+        </div>
+        <button type="submit" class="btn btn-brand"><i class="fa-solid fa-floppy-disk"></i> Save changes</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
