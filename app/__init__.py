@@ -37,9 +37,6 @@ def _ensure_user_columns(db):
 def _auto_provision_admin_from_env(db):
     """
     Create or reset the admin account from environment variables on boot.
-    Set ADMIN_USERNAME, ADMIN_EMAIL, and ADMIN_PASSWORD as environment
-    variables on your host, and this runs automatically every time the
-    app starts - useful on hosts without shell access.
     """
     from app.models import User
 
@@ -47,31 +44,39 @@ def _auto_provision_admin_from_env(db):
     email = os.environ.get("ADMIN_EMAIL")
     password = os.environ.get("ADMIN_PASSWORD")
 
+    print(f"[admin-provision] ADMIN_USERNAME={username!r} ADMIN_EMAIL={email!r} password_set={bool(password)}")
+
     if not (username and email and password):
+        print("[admin-provision] Skipping: one or more ADMIN_* env vars missing.")
         return
 
     email = email.strip().lower()
     should_reset = os.environ.get("ADMIN_RESET_PASSWORD") == "1"
+    print(f"[admin-provision] should_reset={should_reset}")
 
     existing = User.query.filter(
         (User.username == username) | (User.email == email)
     ).first()
 
     if existing:
+        print(f"[admin-provision] Found existing user id={existing.id} username={existing.username!r} email={existing.email!r} role={existing.role!r}")
         existing.role = "admin"
         if should_reset:
             existing.set_password(password)
+            print("[admin-provision] Password reset applied.")
         db.session.commit()
+        print("[admin-provision] Committed update to existing user.")
         return
 
     if len(password) < 12:
+        print("[admin-provision] Skipping creation: password shorter than 12 characters.")
         return
 
     admin = User(username=username, email=email, full_name=username, role="admin")
     admin.set_password(password)
     db.session.add(admin)
     db.session.commit()
-
+    print(f"[admin-provision] Created new admin user id={admin.id}.")
 
 def create_app(config_name="development"):
     app = Flask(__name__, instance_relative_config=True)
