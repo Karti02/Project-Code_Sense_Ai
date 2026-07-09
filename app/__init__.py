@@ -38,6 +38,44 @@ def create_app(config_name="development"):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_map.get(config_name, config_map["default"]))
 
+def _auto_provision_admin_from_env(db):
+    """
+    Create or reset the admin account from environment variables on boot.
+    Set ADMIN_USERNAME, ADMIN_EMAIL, and ADMIN_PASSWORD as environment
+    variables on your host, and this runs automatically every time the
+    app starts - useful on hosts without shell access.
+    """
+    import os
+    from app.models import User
+
+    username = os.environ.get("ADMIN_USERNAME")
+    email = os.environ.get("ADMIN_EMAIL")
+    password = os.environ.get("ADMIN_PASSWORD")
+
+    if not (username and email and password):
+        return
+
+    email = email.strip().lower()
+    should_reset = os.environ.get("ADMIN_RESET_PASSWORD") == "1"
+
+    existing = User.query.filter(
+        (User.username == username) | (User.email == email)
+    ).first()
+
+    if existing:
+        existing.role = "admin"
+        if should_reset:
+            existing.set_password(password)
+        db.session.commit()
+        return
+
+    if len(password) < 12:
+        return
+
+    admin = User(username=username, email=email, full_name=username, role="admin")
+    admin.set_password(password)
+    db.session.add(admin)
+    db.session.commit()
     # Ensure required folders exist
     os.makedirs(app.instance_path, exist_ok=True)
     os.makedirs(app.config["SCREENSHOT_DIR"], exist_ok=True)
@@ -74,6 +112,7 @@ def create_app(config_name="development"):
     with app.app_context():
         db.create_all()
         _ensure_user_columns(db)
+        _auto_provision_admin_from_env(db)
 
     # --- CLI commands ---
     from app.cli import register_cli
