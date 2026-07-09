@@ -34,10 +34,6 @@ def _ensure_user_columns(db):
             conn.execute(text("ALTER TABLE users ADD COLUMN is_active_account BOOLEAN DEFAULT 1 NOT NULL"))
 
 
-def create_app(config_name="development"):
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_object(config_map.get(config_name, config_map["default"]))
-
 def _auto_provision_admin_from_env(db):
     """
     Create or reset the admin account from environment variables on boot.
@@ -45,7 +41,6 @@ def _auto_provision_admin_from_env(db):
     variables on your host, and this runs automatically every time the
     app starts - useful on hosts without shell access.
     """
-    import os
     from app.models import User
 
     username = os.environ.get("ADMIN_USERNAME")
@@ -76,6 +71,12 @@ def _auto_provision_admin_from_env(db):
     admin.set_password(password)
     db.session.add(admin)
     db.session.commit()
+
+
+def create_app(config_name="development"):
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_object(config_map.get(config_name, config_map["default"]))
+
     # Ensure required folders exist
     os.makedirs(app.instance_path, exist_ok=True)
     os.makedirs(app.config["SCREENSHOT_DIR"], exist_ok=True)
