@@ -22,3 +22,4 @@ reportlab==4.4.10
 
 # --- Utilities ---
 Werkzeug==3.1.3
+gunicorn==26.0.0
