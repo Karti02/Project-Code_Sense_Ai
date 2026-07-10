@@ -1,7 +1,4 @@
-"""
-Machine learning routes: shows model accuracy/feature importance, and
-lets the user trigger training + view today/tomorrow/weekly predictions.
-"""
+
 
 from flask import Blueprint, render_template, jsonify, request
 from flask_login import login_required, current_user

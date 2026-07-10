@@ -1,23 +1,3 @@
-#!/usr/bin/env python3
-"""
-Standalone administrator setup script.
-
-Use this if `flask create-admin` isn't being picked up in your environment
-(most commonly: the "flask" CLI not resolving app/cli.py, wrong working
-directory, or a stale virtualenv). This script does the exact same thing
-directly, with no dependency on Flask's CLI/command discovery.
-
-Usage:
-    cd codesense-ai              # the folder containing this file and run.py
-    ADMIN_PASSWORD='a-long-random-passphrase' python create_admin.py --username admin --email admin@example.com
-
-    # or, to be prompted securely instead of using an env var:
-    python create_admin.py --username admin --email admin@example.com
-
-The password is never hard-coded here or anywhere in the codebase - it
-must come from the ADMIN_PASSWORD environment variable, or a hidden
-getpass prompt if that variable isn't set.
-"""
 
 import os
 import sys

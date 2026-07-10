@@ -1,18 +1,4 @@
-"""
-Builds the ML training dataset from a user's collected activity.
 
-If the user doesn't yet have enough real DailyStat rows (a brand new
-account, or a college demo where there's no time to collect weeks of
-real data), we top the dataset up with synthetic-but-realistic rows so
-the model still has enough data to train on. Real rows are always used
-first and are clearly flagged.
-
-Features:
-    coding_time, keyboard_count, mouse_clicks, compile_count,
-    project_switches, idle_time, languages_used, sessions
-Target:
-    productivity_score
-"""
 
 import os
 import numpy as np

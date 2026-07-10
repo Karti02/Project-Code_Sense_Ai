@@ -1,12 +1,3 @@
-"""
-CodeSense AI - Entry point.
-
-Run with:
-    python run.py
-
-Then open http://127.0.0.1:5000 in your browser.
-"""
-
 import os
 from app import create_app
 from app.services.activity_service import start_monitoring

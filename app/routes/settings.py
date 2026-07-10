@@ -1,7 +1,4 @@
-"""
-Settings routes: screenshot toggle/interval, theme, goal, data
-export/import, and analytics reset.
-"""
+
 
 from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for, Response
 from flask_login import login_required, current_user

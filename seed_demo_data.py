@@ -1,9 +1,4 @@
 """
-Optional helper for a college viva/demo: creates a demo user with
-~21 days of realistic-looking activity data, so the dashboard, charts,
-and ML page have something to show immediately (instead of waiting to
-collect real usage first).
-
 Run with:
     python seed_demo_data.py
 

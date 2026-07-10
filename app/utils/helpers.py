@@ -1,6 +1,3 @@
-"""
-Small shared helper functions used across routes/services.
-"""
 
 from datetime import date, timedelta
 

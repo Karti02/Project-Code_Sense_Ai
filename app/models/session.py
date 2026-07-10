@@ -1,7 +1,3 @@
-"""
-CodingSession: one continuous block of coding activity.
-ActivityLog: fine-grained events captured during a session (app switch, idle, etc).
-"""
 
 from datetime import datetime
 from app.extensions import db

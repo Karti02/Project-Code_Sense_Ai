@@ -1,9 +1,3 @@
-"""
-Admin routes - dashboard and user management, restricted to accounts
-with role == "admin". Every route in this blueprint MUST be decorated
-with @admin_required (in addition to @login_required) - never rely on
-template-level hiding of links alone, since that isn't real access control.
-"""
 
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user

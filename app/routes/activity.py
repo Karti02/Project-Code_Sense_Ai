@@ -1,7 +1,3 @@
-"""
-Activity routes: the live monitor tick endpoint, the activity history
-page (with search/filter by date), and manual compile-event logging.
-"""
 
 from datetime import datetime
 from flask import Blueprint, render_template, jsonify, request

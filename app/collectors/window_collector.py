@@ -1,17 +1,4 @@
-"""
-Detects which application the user is currently working in, and (when
-possible) the file/window title, so we can infer the project and file
-being edited.
 
-Works cross-platform on a best-effort basis:
-  - Windows: uses `pygetwindow` (falls back to psutil process list)
-  - Linux:   uses `wmctrl` / `xdotool` if installed (falls back to psutil)
-  - macOS:   uses AppleScript via `osascript` (falls back to psutil)
-
-If none of the platform tools are available, we fall back to scanning
-running processes with psutil and matching against Config.TRACKED_APPS,
-so the app still works out of the box (title/file just won't be known).
-"""
 
 import platform
 import subprocess

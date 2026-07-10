@@ -1,13 +1,3 @@
-"""
-Custom Flask CLI commands.
-
-Provides `flask create-admin`, the supported way to provision the very
-first administrator account. The password is never hard-coded anywhere:
-it must come from the ADMIN_PASSWORD environment variable, or, if that
-isn't set, from an interactive hidden prompt (getpass) so it never ends
-up in shell history.
-"""
-
 import os
 import getpass
 

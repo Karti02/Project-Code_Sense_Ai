@@ -1,9 +1,3 @@
-"""
-Uses the saved per-user model to predict:
-  - today's productivity (from current DailyStat so far)
-  - tomorrow's productivity (from recent trend / averages)
-  - a 7-day weekly productivity trend
-"""
 
 from datetime import date, timedelta
 import numpy as np

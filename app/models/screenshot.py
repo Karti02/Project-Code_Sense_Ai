@@ -1,8 +1,4 @@
-"""
-Screenshot: metadata for automatically captured screenshots.
-Actual image bytes live on disk under /screenshots/YYYY/MM/DD/,
-only the relative path is stored in the DB.
-"""
+
 
 from datetime import datetime
 from app.extensions import db

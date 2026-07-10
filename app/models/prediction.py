@@ -1,7 +1,3 @@
-"""
-MLPrediction: stores each prediction made by the productivity model,
-so the dashboard can show a history / trend without re-running the model.
-"""
 
 from datetime import datetime
 from app.extensions import db

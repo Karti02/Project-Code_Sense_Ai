@@ -1,8 +1,4 @@
-"""
-LanguageUsage: aggregated time-per-language, per user, per day.
-Kept separate (rather than recomputed each time from sessions) so
-dashboard/analytics queries stay fast.
-"""
+
 
 from datetime import date
 from app.extensions import db

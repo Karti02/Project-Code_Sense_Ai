@@ -1,13 +1,3 @@
-"""
-Automatically captures periodic screenshots while the user is coding,
-using PyAutoGUI, and saves them under:
-
-    screenshots/YYYY/MM/DD/HHMMSS.png
-
-Runs as a background thread started by services/activity_service.py.
-Can be paused/resumed/reconfigured from Settings without restarting
-the whole app.
-"""
 
 import os
 import time

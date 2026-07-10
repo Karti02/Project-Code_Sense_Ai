@@ -1,14 +1,4 @@
-"""
-Trains and compares two simple, beginner-friendly models on the
-per-user productivity dataset:
 
-    - RandomForestRegressor  (primary model - handles non-linearity)
-    - LinearRegression       (baseline for comparison)
-
-Saves the winning model + a metadata dict (accuracy, feature
-importance) to app/ml/saved_models/user_<id>_model.joblib so
-predictions can be made instantly without retraining every time.
-"""
 
 import os
 import joblib

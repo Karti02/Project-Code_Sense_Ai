@@ -1,17 +1,3 @@
-"""
-Tracks raw keyboard/mouse activity counts and idle time.
-
-Uses:
-  - `keyboard` library to count key presses (global hook)
-  - `mouse` library to count mouse clicks (global hook)
-  - `pyautogui` to read mouse position for idle detection (no global hook
-    required, so it works even in restricted environments)
-
-All hooks are best-effort: if a platform/permission issue prevents a
-global hook from installing (common on macOS without accessibility
-permissions, or on headless Linux), the monitor simply reports zero
-counts instead of crashing the whole app.
-"""
 
 import time
 import threading

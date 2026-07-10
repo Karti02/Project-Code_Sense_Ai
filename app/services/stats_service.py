@@ -1,8 +1,4 @@
-"""
-Analytics service - uses Pandas to turn raw DailyStat / CodingSession /
-LanguageUsage rows into the summaries shown on the Dashboard, Activity
-and Reports pages.
-"""
+
 
 from datetime import date, timedelta
 

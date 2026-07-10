@@ -1,7 +1,3 @@
-"""
-CodeSense AI - Application Configuration
-Central place for all configurable settings.
-"""
 
 import os
 

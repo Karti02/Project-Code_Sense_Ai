@@ -1,7 +1,3 @@
-"""
-Detects the programming language of a file from its extension, and
-extracts a "project name" from a file's parent folder.
-"""
 
 import os
 from config import Config

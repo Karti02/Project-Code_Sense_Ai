@@ -1,7 +1,3 @@
-"""
-Dashboard routes - the main landing page after login, plus the
-JSON endpoint used for auto-refresh (polled by static/js/dashboard.js).
-"""
 
 from datetime import date
 from flask import Blueprint, render_template, jsonify

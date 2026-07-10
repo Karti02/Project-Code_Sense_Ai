@@ -1,9 +1,3 @@
-/* =========================================================
-   CodeSense AI - Design Tokens
-   Concept: "your IDE, but it tracks you" - a dashboard styled
-   like a code editor: file-tab shaped cards, a terminal-green
-   "live" cursor, monospace numerals, language-colored accents.
-   ========================================================= */
 
 :root[data-theme="dark"] {
   --bg: #0b0e14;

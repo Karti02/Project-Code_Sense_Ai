@@ -1,6 +1,3 @@
-// Handles dark/light theme toggle and mobile sidebar toggle.
-// Theme preference is also persisted server-side via /settings/update,
-// but we flip it instantly client-side for a snappy feel.
 
 document.addEventListener("DOMContentLoaded", () => {
   const root = document.documentElement;

@@ -1,11 +1,4 @@
-"""
-Authorization decorators.
 
-These wrap Flask-Login's @login_required to add role checks. Always stack
-@login_required (or rely on this decorator doing an equivalent check) so
-that unauthenticated requests are redirected to the login page rather than
-receiving a raw 403.
-"""
 
 from functools import wraps
 

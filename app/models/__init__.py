@@ -1,8 +1,3 @@
-"""
-Models package. Import everything here so `db.create_all()` in the
-app factory sees every table, and so other modules can simply do
-`from app.models import User, CodingSession, ...`.
-"""
 
 from app.models.user import User
 from app.models.session import CodingSession, ActivityLog

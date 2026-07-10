@@ -1,8 +1,4 @@
-// Two loops run on the dashboard:
-//   1. `tick()` every 5s -> tells the backend to sample current activity
-//      (active app/file/language, keyboard+mouse counts, idle state)
-//   2. `refreshDashboard()` every 5s -> pulls fresh summary numbers and
-//      updates the DOM + charts WITHOUT a full page reload.
+
 
 const TICK_INTERVAL_MS = 5000;
 const REFRESH_INTERVAL_MS = 5000;

@@ -1,9 +1,3 @@
-"""
-Shared Flask extension instances.
-Kept in their own module to avoid circular imports between
-app/__init__.py, models, and routes.
-"""
-
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 

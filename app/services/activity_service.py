@@ -1,16 +1,4 @@
-"""
-Activity service: the "brain" that ties the raw collectors (window,
-keyboard/mouse, screenshots) to the database.
 
-Call `tick(user)` regularly (e.g. every 5-10 seconds via a background
-thread started at login, or from a `/activity/tick` endpoint hit by
-client-side JS) to:
-  1. detect the active app/file/language
-  2. open a new CodingSession if the app/project/file changed
-  3. close the previous session and persist keyboard/mouse counts
-  4. detect idle time
-  5. update DailyStat aggregates
-"""
 
 from datetime import datetime, date
 

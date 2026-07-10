@@ -1,8 +1,4 @@
-"""
-Reports routes: generates downloadable PDF reports (daily/weekly/monthly)
-using ReportLab, built from the same Pandas analytics used on the
-dashboard.
-"""
+
 
 import os
 from datetime import datetime

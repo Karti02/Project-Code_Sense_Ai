@@ -1,7 +1,3 @@
-"""
-DailyStat: one row per user per calendar day, holding pre-aggregated
-statistics used by the dashboard, analytics and ML dataset generator.
-"""
 
 from datetime import date
 from app.extensions import db

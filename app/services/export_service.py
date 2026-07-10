@@ -1,7 +1,4 @@
-"""
-Export / import service - lets a user back up or restore their data
-(daily stats, sessions, language usage) as JSON, and reset all analytics.
-"""
+
 
 import json
 from datetime import datetime, date
