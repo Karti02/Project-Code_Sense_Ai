@@ -4,8 +4,6 @@ import sys
 import getpass
 import argparse
 
-# Make sure this script can be run from the project root regardless of
-# how it's invoked.
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from app import create_app
